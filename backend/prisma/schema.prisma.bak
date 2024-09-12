@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  roleId   Int
+  name     String
+  Answer   Answer[]
+  role     Role     @relation(fields: [roleId], references: [id])
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+}
+
+model Student {
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  department   String
+  level        String
+  password     String
+  studentID    Int           @unique
+  Answer       Answer[]
+  Enrollment   Enrollment[]
+  results      Result[]
+  studentExams StudentExam[]
+}
+
+model Enrollment {
+  id             Int      @id @default(autoincrement())
+  studentID      Int
+  courseId       Int
+  enrollmentDate DateTime @default(now())
+  examId         Int?
+  course         Course   @relation(fields: [courseId], references: [id])
+  Exam           Exam?    @relation(fields: [examId], references: [id])
+  student        Student  @relation(fields: [studentID], references: [id])
+
+  @@unique([studentID, courseId])
+}
+
+model Course {
+  id                Int          @id @default(autoincrement())
+  courseCode        String       @unique
+  courseTitle       String
+  courseDescription String
+  department        String
+  credits           Int
+  level             Int
+  Enrollment        Enrollment[]
+  exams             Exam[]
+  questions         Question[]
+  results           Result[]
+}
+
+model Exam {
+  id           Int           @id @default(autoincrement())
+  examID       String        @unique
+  examTitle    String
+  courseId     Int
+  examDate     DateTime
+  examTime     String
+  duration     Int
+  Answer       Answer[]
+  Enrollment   Enrollment[]
+  course       Course        @relation(fields: [courseId], references: [id])
+  questions    Question[]
+  results      Result[]
+  studentExams StudentExam[]
+}
+
+model StudentExam {
+  id          Int       @id @default(autoincrement())
+  studentID   Int
+  examId      Int
+  score       Int
+  submitted   Boolean   @default(false)
+  submittedAt DateTime?
+  exam        Exam      @relation(fields: [examId], references: [id])
+  student     Student   @relation(fields: [studentID], references: [id])
+
+  @@unique([studentID, examId])
+}
+
+model Question {
+  id            Int      @id @default(autoincrement())
+  courseId      Int
+  questionID    String   @unique
+  questionText  String
+  questionType  String
+  correctAnswer String
+  examID        Int
+  options       String[]
+  Answer        Answer[]
+  course        Course   @relation(fields: [courseId], references: [id])
+  exam          Exam     @relation(fields: [examID], references: [id])
+}
+
+model Answer {
+  id         Int      @id @default(autoincrement())
+  studentID  Int
+  examID     Int
+  questionID Int
+  answer     String
+  createdAt  DateTime @default(now())
+  userId     Int?
+  exam       Exam     @relation(fields: [examID], references: [id])
+  question   Question @relation(fields: [questionID], references: [id])
+  student    Student  @relation(fields: [studentID], references: [id])
+  User       User?    @relation(fields: [userId], references: [id])
+}
+
+model Result {
+  id        Int     @id @default(autoincrement())
+  courseId  Int
+  examId    Int
+  score     Int
+  grade     String
+  studentID Int
+  course    Course  @relation(fields: [courseId], references: [id])
+  exam      Exam    @relation(fields: [examId], references: [id])
+  student   Student @relation(fields: [studentID], references: [id])
+}

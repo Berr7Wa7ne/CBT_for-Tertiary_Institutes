@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  role     Role     @relation(fields: [roleId], references: [id])
+  roleId   Int
+  name     String
+  Answer   Answer[]
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+  students Student[]
+}
+
+model Student {
+  id           Int           @id @default(autoincrement())
+  studentID    Int           @unique
+  name         String
+  email        String        @unique
+  department   String
+  level        String
+  password     String
+  results      Result[]
+  studentExams StudentExam[]
+  Enrollment   Enrollment[]
+  Answer       Answer[]
+  roleId        Int
+  role          Role     @relation(fields: [roleId], references: [id])
+  passwordResets PasswordReset[]
+}
+
+model Enrollment {
+  id             Int      @id @default(autoincrement())
+  studentID      Int
+  courseId       Int
+  enrollmentDate DateTime @default(now())
+  student        Student  @relation(fields: [studentID], references: [id])
+  course         Course   @relation(fields: [courseId], references: [id])
+  Exam           Exam?    @relation(fields: [examId], references: [id])
+  examId         Int?
+
+  @@unique([studentID, courseId]) // Ensures a student can't enroll in the same course more than once
+}
+
+model Course {
+  id                Int          @id @default(autoincrement())
+  courseCode        String       @unique
+  courseTitle       String
+  courseDescription String
+  department        String
+  level             Int
+  credits           Int
+  exams             Exam[]
+  questions         Question[]
+  results           Result[]
+  Enrollment        Enrollment[]
+}
+
+model Exam {
+  id           Int           @id @default(autoincrement())
+  examID       String        @unique
+  examTitle    String
+  course       Course        @relation(fields: [courseId], references: [id])
+  courseId     Int
+  examDate     DateTime
+  examTime     String
+  duration     Int
+  questions    Question[]
+  results      Result[]
+  studentExams StudentExam[] // Add this relation to track student submissions
+  Enrollment   Enrollment[]
+  Answer       Answer[]
+}
+
+model StudentExam {
+  id          Int       @id @default(autoincrement())
+  student     Student   @relation(fields: [studentID], references: [id])
+  studentID   Int
+  exam        Exam      @relation(fields: [examId], references: [id])
+  examId      Int
+  score       Int
+  submitted   Boolean   @default(false)
+  submittedAt DateTime?
+
+  @@unique([studentID, examId])
+}
+
+model Question {
+  id            Int      @id @default(autoincrement())
+  questionID    String   @unique
+  questionText  String
+  course        Course   @relation(fields: [courseId], references: [id])
+  courseId      Int
+  exam          Exam     @relation(fields: [examID], references: [id])
+  examID        Int
+  questionType  String
+  options       String[]
+  correctAnswer String
+  Answer        Answer[]
+}
+
+model Answer {
+  id         Int      @id @default(autoincrement())
+  studentID  Int
+  examID     Int
+  questionID Int
+  answer     String
+  createdAt  DateTime @default(now())
+  student    Student  @relation(fields: [studentID], references: [id])
+  exam       Exam     @relation(fields: [examID], references: [id])
+  question   Question @relation(fields: [questionID], references: [id])
+  User       User?    @relation(fields: [userId], references: [id])
+  userId     Int?
+}
+
+model Result {
+  id        Int     @id @default(autoincrement())
+  student   Student @relation(fields: [studentID], references: [id])
+  studentID Int
+  course    Course  @relation(fields: [courseId], references: [id])
+  courseId  Int
+  exam      Exam    @relation(fields: [examId], references: [id])
+  examId    Int
+  score     Int
+  grade     String
+}
+
+model PasswordReset {
+  id        Int      @id @default(autoincrement())
+  token     String
+  createdAt DateTime @default(now())
+  userId    Int
+  student   Student  @relation(fields: [userId], references: [id])
+}
+
+

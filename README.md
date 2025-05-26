@@ -1,70 +1,98 @@
-# Getting Started with Create React App
+# 🖥️ Computer-Based Testing (CBT) System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-featured CBT platform tailored for tertiary institutions, designed to streamline the examination process for both **administrators** and **students**. It ensures secure, automated, and scalable digital assessments with real-time result tracking.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## ✨ Features
 
-### `npm start`
+### 🔒 Admin Panel
+- Create & manage multiple exams
+- Add and edit questions (Multiple Choice, True/False, etc.)
+- Assign exams to departments, courses, or students
+- Monitor exam progress and student submissions in real time
+- Automated result grading and analytics
+- Role-based access control (e.g., super admin, exam officer)
+- Export reports and performance summaries
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 🎓 Student App
+- Register and log in securely
+- Take assigned exams within a timed interface
+- Auto-save answers as the student progresses
+- Get instant feedback or results (based on settings)
+- Access exam history and scores
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🛠️ Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Area        | Technologies Used |
+|-------------|-------------------|
+| Frontend    | React.js · Tailwind CSS · Axios |
+| Backend     | Node.js · Express · JWT Auth · Prisma ORM |
+| Database    | PostgreSQL / MySQL (configurable) |
+| Tools       | Git · GitHub Actions · Postman · Docker (optional) |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 📦 Folder Structure
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+cbt-system/
+├── admin-frontend/ # Admin dashboard
+├── student-frontend/ # Student exam interface
+└── backend/ # REST API and DB logic
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🚀 Getting Started
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Clone the Repository
+    ```bash
+      git clone https://github.com/your-username/cbt-system.git
+      cd cbt-system
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Set up the Backend
+    ```bash
+      cd backend
+      npm install
+      npx prisma migrate dev
+      npm nodemon src/server.js
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Set up Admin Frontend
+    ```bash
+      cd admin-frontend
+      npm install
+      npm run dev
 
-## Learn More
+### Set up Admin Frontend
+    ```bash
+      cd student-frontend
+      npm install
+      npm run dev
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📌 Upcoming Features
 
-### Code Splitting
+- Exam result export (CSV/Excel)
+- Advanced analytics with charts
+- Question randomization & anti-cheating measures
+- SMS/Email exam notifications
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 📬 Contact & Contribution
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Pull requests and contributions are welcome!
 
-### Making a Progressive Web App
+For support or questions:  
+📧 **ahakiricosmas@gmail.com**  
+🔗 [LinkedIn](https://linkedin.com/in/ahakiri-uke-444619351/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 🧠 License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+This project is open source and available under the [MIT License](LICENSE).
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
